@@ -1,0 +1,16 @@
+[
+ {
+  "directory": "C:\\Users\\Qiang\\Desktop\\Sandbox",
+  "arguments": [
+   "clang++",
+   "-Iinclude",
+   "-Wall",
+   "-g",
+   "-c",
+   "src/main.cpp",
+   "-o",
+   "obj/main.o"
+  ],
+  "file": "src/main.cpp"
+ }
+]
