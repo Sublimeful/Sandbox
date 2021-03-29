@@ -120,6 +120,24 @@ void switchMaterial(MaterialType materialType)
   currentMaterial = Materials[materialType];
   renderer->switchMaterial(currentMaterial);
 }
+
+void drop(int r, int c)
+{
+  if(r+1 >= DISPLAYHEIGHT) return;
+  if(grid[r+1][c] == AIR)
+  {
+    std::swap(grid[r+1][c], grid[r][c]);
+  }
+  else if(grid[r+1][c-1] == AIR)
+  {
+    std::swap(grid[r+1][c-1], grid[r][c]);
+  }
+  else if(grid[r+1][c+1] == AIR)
+  {
+    std::swap(grid[r+1][c+1], grid[r][c]);
+  }
+}
+
 void input()
 {
   SDL_Event event;
@@ -171,6 +189,16 @@ void update()
   if(gamePad.mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))
   {
     grid[gamePad.mouseY][gamePad.mouseX] = currentMaterial.type;
+  }
+  for(int r = DISPLAYHEIGHT; r >= 0; r--)
+  {
+    for(int c = 0; c < DISPLAYWIDTH; c++)
+    {
+      if(grid[r][c] != AIR)
+      {
+        drop(r, c);
+      }
+    }
   }
 }
 //-->
