@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +20 Makefile
-badd +120 src/main.cpp
+badd +311 src/main.cpp
 badd +1 src/Sprite.cpp
 badd +1 test.sh
 badd +1 include/Sprite.hpp
@@ -17,13 +17,13 @@ badd +1 ~/AppData/Local/nvim/init.vim
 badd +1 ~/.config/nvim/coc-settings.json
 badd +1 include/Tetrimino.h
 badd +1 src/App.cpp
-badd +23 include/App.h
-badd +19 include/Renderer.h
+badd +1 include/App.h
+badd +1 include/Renderer.h
 badd +1 init.vim
 badd +2 a.exe
-badd +4 session.vim
+badd +5 session.vim
 badd +2 zlib1.dll
-badd +185 ~/.config/nvim/init.vim
+badd +1 ~/.config/nvim/init.vim
 badd +1 src/Game.cpp
 badd +1 src/Renderer.cpp
 badd +1 src/Tetrimino.cpp
@@ -33,10 +33,9 @@ badd +1 ;
 badd +16 compile_commands.json
 badd +1 ~/AppData/Local//nvim/init.vim
 badd +1 include/Game.h
+badd +1 ~/.config/nvim/plugged//nerdtree//lib//nerdtree/opener.vim
 argglobal
 %argdel
-tabnew
-tabrewind
 edit src/main.cpp
 set splitbelow splitright
 set nosplitbelow
@@ -47,50 +46,27 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
-setlocal fdm=manual
+setlocal fdm=marker
 setlocal fde=0
-setlocal fmr={{{,}}}
+setlocal fmr=<--,-->
 setlocal fdi=#
 setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 120 - ((23 * winheight(0) + 15) / 30)
+50
+normal! zo
+260
+normal! zo
+323
+normal! zo
+let s:l = 337 - ((0 * winheight(0) + 15) / 30)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 120
-normal! 0
-tabnext
-edit ~/.config/nvim/init.vim
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 15 - ((10 * winheight(0) + 15) / 30)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 15
-normal! 024|
-tabnext 2
+keepjumps 337
+normal! 021|
+tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0&& getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
@@ -101,7 +77,6 @@ if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
