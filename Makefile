@@ -7,7 +7,7 @@ EXE := a.exe
 CXX := clang++
 CXXFLAGS := -Iinclude -Wall -g
 LDFLAGS := 
-LDLIBS := -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+LDLIBS := -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 
 $(EXE): $(OBJ)
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
