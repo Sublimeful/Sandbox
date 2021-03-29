@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +20 Makefile
-badd +311 src/main.cpp
+badd +19 src/main.cpp
 badd +1 src/Sprite.cpp
 badd +1 test.sh
 badd +1 include/Sprite.hpp
@@ -54,18 +54,12 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-50
-normal! zo
-260
-normal! zo
-323
-normal! zo
-let s:l = 337 - ((0 * winheight(0) + 15) / 30)
+let s:l = 22 - ((13 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 337
-normal! 021|
+keepjumps 22
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0&& getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -77,6 +71,7 @@ if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
