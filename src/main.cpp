@@ -2,21 +2,26 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
+#include <array>
 
-#define DISPLAYHEIGHT 300
-#define DISPLAYWIDTH 300
+#define DISPLAYHEIGHT 600
+#define DISPLAYWIDTH 800
 
 bool running;
 int currentFrame, lastFrame, frameCount;
 SDL_Window *window;
-int grid[DISPLAYHEIGHT][DISPLAYWIDTH];
+const unsigned int pSize = 4;
+const unsigned int sizeW = DISPLAYWIDTH/pSize;
+const unsigned int sizeH = DISPLAYHEIGHT/pSize;
+std::array<std::array<int, sizeW>, sizeH> grid;
 
 enum MaterialType
 {
   AIR,
   SAND,
   WATER,
-  DIRT
+  DIRT,
+  STONE
 };
 
 struct Material
@@ -26,7 +31,7 @@ struct Material
   SDL_Color color;
   SDL_Color textColor;
 } currentMaterial,
-  Materials[4] = {
+  Materials[5] = {
   {
     AIR,
     "Air",
@@ -49,6 +54,12 @@ struct Material
     DIRT,
     "Dirt",
     {173, 95, 0, 255},
+    {0, 0, 0, 255}
+  },
+  {
+    STONE,
+    "STONE",
+    {128, 128, 128, 255},
     {0, 0, 0, 255}
   }
 };
@@ -74,22 +85,22 @@ class Renderer
     }
     void render()
     {
-      for(int r = 0; r < displayHeight; r++)
+      for(int r = 0; r < sizeH; r++)
       {
-        for(int c = 0; c < displayWidth; c++)
+        for(int c = 0; c < sizeW; c++)
         {
           SDL_Rect rect;
-          rect.x = c, rect.y = r, rect.w = 1, rect.h = 1;
+          rect.x = c * pSize, rect.y = r * pSize, rect.w = pSize, rect.h = pSize;
           SDL_Color color = Materials[grid[r][c]].color;
           SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
           SDL_RenderFillRect(renderer, &rect);
         }
       }
       SDL_Rect messageRect;
-      messageRect.x = 0;
-      messageRect.y = 0;
-      messageRect.w = 50;
-      messageRect.h = 50;
+      messageRect.x = 20;
+      messageRect.y = -30;
+      messageRect.w = 175;
+      messageRect.h = 175;
       SDL_RenderCopy(renderer, materialText, NULL, &messageRect);
     }
     void switchMaterial(Material material)
@@ -109,7 +120,7 @@ class Renderer
     unsigned int displayHeight;
     SDL_Renderer *renderer;
     SDL_Texture *materialText;
-    TTF_Font *font = TTF_OpenFont("res/fonts/OpenSans-Regular.ttf", 20);
+    TTF_Font *font = TTF_OpenFont("res/fonts/OpenSans-Bold.ttf", 20);
 } *renderer;
 //-->
 
@@ -123,7 +134,7 @@ void switchMaterial(MaterialType materialType)
 
 void drop(int r, int c)
 {
-  if(r+1 >= DISPLAYHEIGHT) return;
+  if(r+1 >= sizeH) return;
   if(grid[r+1][c] == AIR)
   {
     std::swap(grid[r+1][c], grid[r][c]);
@@ -164,6 +175,9 @@ void input()
           case SDLK_4:
             switchMaterial(static_cast<MaterialType>(3));
             break;
+          case SDLK_5:
+            switchMaterial(static_cast<MaterialType>(4));
+            break;
         }
     }
   }
@@ -188,13 +202,22 @@ void update()
 {
   if(gamePad.mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))
   {
-    grid[gamePad.mouseY][gamePad.mouseX] = currentMaterial.type;
-  }
-  for(int r = DISPLAYHEIGHT; r >= 0; r--)
-  {
-    for(int c = 0; c < DISPLAYWIDTH; c++)
+    for(int i = -1; i <= 1; i++)
     {
-      if(grid[r][c] != AIR)
+      for(int j = -1; j <= 1; j++)
+      {
+        int r = gamePad.mouseY/pSize + i;
+        int c = gamePad.mouseX/pSize + j;
+        if(r >= sizeH || r < 0 || c >= sizeW || c < 0) break;
+        grid[r][c] = currentMaterial.type;
+      }
+    }
+  }
+  for(int r = sizeH; r >= 0; r--)
+  {
+    for(int c = 0; c < sizeW; c++)
+    {
+      if(grid[r][c] != AIR && grid[r][c] != STONE)
       {
         drop(r, c);
       }
@@ -213,9 +236,9 @@ int main(int argc, char *argv[])
   renderer = new Renderer(window, DISPLAYWIDTH, DISPLAYHEIGHT);
   running = true;
   lastFrame = 0;
-  for(int r = 0; r < DISPLAYHEIGHT; r++)
+  for(int r = 0; r < sizeH; r++)
   {
-    for(int c = 0; c < DISPLAYWIDTH; c++)
+    for(int c = 0; c < sizeW; c++)
     {
       grid[r][c] = AIR;
     }
