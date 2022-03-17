@@ -1,15 +1,17 @@
-
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <cstdio>
 #include <iostream>
 #include <array>
+
+#include "Timer.h"
 
 #define DISPLAYHEIGHT 600
 #define DISPLAYWIDTH 800
 
 bool running;
-int currentFrame, lastFrame, frameCount;
 SDL_Window *window;
+Timer* timer;
 const unsigned int pSize = 4;
 const unsigned int sizeW = DISPLAYWIDTH/pSize;
 const unsigned int sizeH = DISPLAYHEIGHT/pSize;
@@ -186,14 +188,6 @@ void input()
 
 void render()
 {
-  frameCount++;
-
-  int timerFPS = SDL_GetTicks() - currentFrame;
-  if(timerFPS < (1000/60.f))
-  {
-    SDL_Delay((1000/60.f) - timerFPS);
-  }
-
   renderer->render();
   renderer->present();
 }
@@ -229,13 +223,16 @@ void update()
 
 int main(int argc, char *argv[])
 {
+  /* Initialize windows and stuff */
   SDL_Init(SDL_INIT_EVERYTHING);
   TTF_Init();
 
   window = SDL_CreateWindow("Sandbox", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, DISPLAYWIDTH, DISPLAYHEIGHT, 0);
   renderer = new Renderer(window, DISPLAYWIDTH, DISPLAYHEIGHT);
   running = true;
-  lastFrame = 0;
+  timer = Timer::instance();
+
+  /* Initialize grid for game */
   for(int r = 0; r < sizeH; r++)
   {
     for(int c = 0; c < sizeW; c++)
@@ -245,17 +242,17 @@ int main(int argc, char *argv[])
   }
 
   switchMaterial(AIR);
+
+  /* Main game loop */
   while(running)
   {
-    currentFrame = SDL_GetTicks();
-    if(currentFrame >= lastFrame + 1000)
-    {
-      lastFrame = currentFrame;
-      frameCount = 0;
+    timer->update();
+    if(timer->deltaTime() >= 1.0f / 60) {
+      input();
+      update();
+      render();
+      timer->reset();
     }
-    input();
-    update();
-    render();
   }
 
   return 0;
