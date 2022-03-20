@@ -1,4 +1,6 @@
-#include "Timer.h"
+#include <SDL2/SDL_timer.h>
+
+#include "Timer.hpp"
 
 Timer* Timer::static_instance = NULL;
 Timer* Timer::instance() {
