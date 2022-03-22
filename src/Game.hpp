@@ -5,13 +5,12 @@
 
 #include <exception>
 #include <vector>
+#include <unordered_map>
 
 #include "Timer.hpp"
 #include "GamePad.hpp"
 #include "Renderer.hpp"
 #include "Material.hpp"
-
-using namespace std;
 
 class Game {
   private:
@@ -25,9 +24,10 @@ class Game {
     unsigned int display_height;
     unsigned int size_w;
     unsigned int size_h;
-    vector<vector<int>> grid;
-    vector<vector<int>> test;
-    
+    unsigned int brush_size;
+    std::vector<std::vector<char>> grid;
+    std::vector<std::vector<int>> test;
+    std::unordered_map<MaterialType, int> weight_values;
     static const unsigned int size_p = 4;
     struct Material materials[5] = {
       {
@@ -61,6 +61,7 @@ class Game {
         {0, 0, 0, 255}
       }
     };
+    
 
   private:
     void render();
@@ -73,6 +74,7 @@ class Game {
   public:
     void switchMaterial(MaterialType mt);
     void drop(int r, int c);
+    void flow(int r, int c);
     
   public:
     Game(int w, int h);

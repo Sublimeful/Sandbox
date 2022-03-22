@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 
-enum MaterialType
+enum MaterialType : char
 {
   AIR,
   SAND,
@@ -19,5 +19,7 @@ struct Material
   SDL_Color color;
   SDL_Color textColor;
 };
+
+MaterialType cast(int n);
 
 #endif

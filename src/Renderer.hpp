@@ -15,7 +15,7 @@ class Renderer {
     Material* materials;
 
   public:
-    void render_grid(std::vector<std::vector<int>> grid);
+    void render_grid(std::vector<std::vector<char>> grid);
     void present();
 
   public:
