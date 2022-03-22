@@ -6,12 +6,7 @@
 
 #include "Game.hpp"
 #include "Material.hpp"
-
-void swap(char* element_1, char* element_2) {
-  char temp = *element_1;
-  *element_1 = *element_2;
-  *element_2 = temp;
-}
+#include "Algorithms.hpp"
 
 void Game::render() {
   renderer->render_grid(grid);
@@ -35,6 +30,7 @@ void Game::update()
       }
     }
   }
+
   for(int r = size_h - 1; r >= 0; r--)
   {
     for(int c = 0; c < size_w; c++)
@@ -108,27 +104,27 @@ void Game::run() {
   }
 }
 
+int Game::get_weight(byte b) {
+  return weight_values[static_cast<MaterialType>(b)];
+}
+
 void Game::switchMaterial(MaterialType material_type) {
   current_material = materials[material_type];
 }
 
 void Game::drop(int r, int c) {
   if(r+1 >= size_h) return;
-  char* current = &grid[r][c];
-  char* bottom = &grid[r+1][c];
-  char* bottom_left = &grid[r+1][c-1];
-  char* bottom_right = &grid[r+1][c+1];
-  MaterialType m_current = cast(*current);
-  MaterialType m_bottom = cast(*bottom);
-  MaterialType m_bottom_left = cast(*bottom_left);
-  MaterialType m_bottom_right = cast(*bottom_right);
-  if(bottom && weight_values[m_current] > weight_values[m_bottom]) {
+  byte* current = &grid[r][c];
+  byte* bottom = &grid[r+1][c];
+  byte* bottom_left = &grid[r+1][c-1];
+  byte* bottom_right = &grid[r+1][c+1];
+  if(bottom && get_weight(*current) > get_weight(*bottom)) {
     swap(bottom, current);
   }
-  else if(bottom_left && weight_values[m_current] > weight_values[m_bottom_left]) {
+  else if(bottom_left && get_weight(*current) > get_weight(*bottom_left)) {
     swap(bottom_left, current);
   }
-  else if(bottom_right && weight_values[m_current] > weight_values[m_bottom_right]) {
+  else if(bottom_right && get_weight(*current) > get_weight(*bottom_right)) {
     swap(bottom_right, current);
   }
 }
@@ -162,7 +158,7 @@ Game::Game(int display_width, int display_height) :
   display_height(display_height),
   size_w(display_width / size_p),
   size_h(display_height / size_p),
-  grid(size_h, std::vector<char>(size_w)),
+  grid(size_h, std::vector<byte>(size_w)),
   running(true),
   brush_size(2)
 {
@@ -179,16 +175,6 @@ Game::Game(int display_width, int display_height) :
       grid[r].push_back(AIR);
     }
   }
-  
-  /* Set weight values */
-  weight_values = std::unordered_map<MaterialType, int>
-  ({
-    {AIR, 0},
-    {WATER, 1},
-    {SAND, 5},
-    {DIRT, 5},
-    {STONE, 10}
-  });
 
   /* Set current material */
   current_material = materials[0];

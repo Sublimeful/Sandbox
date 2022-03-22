@@ -1,5 +1,5 @@
-#ifndef _TIMER_H_SUB
-#define _TIMER_H_SUB
+#ifndef _TIMER_H
+#define _TIMER_H
 
 #include <SDL2/SDL.h>
 

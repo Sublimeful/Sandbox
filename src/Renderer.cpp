@@ -5,7 +5,7 @@ Renderer::Renderer(SDL_Window* w, unsigned int dw, unsigned int dh, unsigned int
   internal_renderer = SDL_CreateRenderer(window, -1, 0);
 }
 
-void Renderer::render_grid(std::vector<std::vector<char>> grid) {
+void Renderer::render_grid(std::vector<std::vector<byte>> grid) {
   for(int r = 0; r < display_height / size_p; r++)
   {
     for(int c = 0; c < display_width / size_p; c++)

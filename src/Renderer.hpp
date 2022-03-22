@@ -1,9 +1,10 @@
-#ifndef _RENDERER_H_SUB
-#define _RENDERER_H_SUB
+#ifndef _RENDERER_H
+#define _RENDERER_H
 
 #include <vector>
 
 #include "Material.hpp"
+#include "DataTypes.hpp"
 
 class Renderer {
   private:
@@ -15,7 +16,7 @@ class Renderer {
     Material* materials;
 
   public:
-    void render_grid(std::vector<std::vector<char>> grid);
+    void render_grid(std::vector<std::vector<byte>> grid);
     void present();
 
   public:

@@ -1,5 +1,5 @@
-#ifndef _GAME_H_SUB
-#define _GAME_H_SUB
+#ifndef _GAME_H
+#define _GAME_H
 
 #include <SDL2/SDL.h>
 
@@ -11,6 +11,7 @@
 #include "GamePad.hpp"
 #include "Renderer.hpp"
 #include "Material.hpp"
+#include "DataTypes.hpp"
 
 class Game {
   private:
@@ -25,38 +26,44 @@ class Game {
     unsigned int size_w;
     unsigned int size_h;
     unsigned int brush_size;
-    std::vector<std::vector<char>> grid;
-    std::vector<std::vector<int>> test;
-    std::unordered_map<MaterialType, int> weight_values;
     static const unsigned int size_p = 4;
+    std::vector<std::vector<byte>> grid;
+    std::unordered_map<MaterialType, byte> weight_values = std::unordered_map<MaterialType, byte>
+      ({
+       {AIR, 0},
+       {WATER, 1},
+       {SAND, 5},
+       {DIRT, 5},
+       {STONE, 10}
+     });
     struct Material materials[5] = {
       {
-        AIR,
         "Air",
+        AIR,
         {228, 240, 239, 255},
         {0, 0, 0, 255}
       },
       {
-        SAND,
         "Sand",
+        SAND,
         {255, 182, 56, 255},
         {0, 0, 0, 255}
       },
       {
-        WATER,
         "Water",
+        WATER,
         {20, 142, 255, 255},
         {0, 0, 0, 255}
       },
       {
-        DIRT,
         "Dirt",
+        DIRT,
         {173, 95, 0, 255},
         {0, 0, 0, 255}
       },
       {
-        STONE,
         "STONE",
+        STONE,
         {128, 128, 128, 255},
         {0, 0, 0, 255}
       }
@@ -75,6 +82,7 @@ class Game {
     void switchMaterial(MaterialType mt);
     void drop(int r, int c);
     void flow(int r, int c);
+    int get_weight(byte c);
     
   public:
     Game(int w, int h);

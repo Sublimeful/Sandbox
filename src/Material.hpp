@@ -1,9 +1,10 @@
-#ifndef _MATERIAL_H_SUB
-#define _MATERIAL_H_SUB
+#ifndef _MATERIAL_H
+#define _MATERIAL_H
 
 #include <SDL2/SDL.h>
+#include "DataTypes.hpp"
 
-enum MaterialType : char
+enum MaterialType : byte
 {
   AIR,
   SAND,
@@ -14,12 +15,10 @@ enum MaterialType : char
 
 struct Material
 {
-  MaterialType type;
   const char *typeName;
+  MaterialType type;
   SDL_Color color;
   SDL_Color textColor;
 };
-
-MaterialType cast(int n);
 
 #endif
