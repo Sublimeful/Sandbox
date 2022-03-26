@@ -118,14 +118,36 @@ void Game::drop(int r, int c) {
   byte* bottom = &grid[r+1][c];
   byte* bottom_left = &grid[r+1][c-1];
   byte* bottom_right = &grid[r+1][c+1];
+  byte* left = &grid[r][c-1];
+  byte* right = &grid[r][c+1];
   if(bottom && get_weight(*current) > get_weight(*bottom)) {
     swap(bottom, current);
+    bool can_go_left = c - 1 >= 0 && *left == AIR;
+    bool can_go_right = c + 1 < size_w && *right == AIR;
+
+    // bottom is equal to the dropped material since we swapped bottom with current
+    if(can_go_left && (rand() % 2)) {
+      swap(left, bottom);
+      return;
+    }
+    if(can_go_right && (rand() % 2)) {
+      swap(right, bottom);
+      return;
+    }
   }
-  else if(bottom_left && get_weight(*current) > get_weight(*bottom_left)) {
-    swap(bottom_left, current);
-  }
-  else if(bottom_right && get_weight(*current) > get_weight(*bottom_right)) {
-    swap(bottom_right, current);
+  else {
+    bool can_go_bottom_left = c - 1 >= 0 && bottom_left && get_weight(*current) > get_weight(*bottom_left);
+    bool can_go_bottom_right = c + 1 < size_w && bottom_right && get_weight(*current) > get_weight(*bottom_right);
+
+    if(can_go_bottom_left && (rand() % 2)) {
+      swap(bottom_left, current);
+      return;
+    }
+
+    if(can_go_bottom_right && (rand() % 2)) {
+      swap(bottom_right, current);
+      return;
+    }
   }
 }
 

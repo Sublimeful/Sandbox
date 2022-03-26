@@ -11,6 +11,7 @@ set shortmess=aoO
 argglobal
 %argdel
 tabnew
+tabnew
 tabrewind
 edit src/Game.cpp
 let s:save_splitbelow = &splitbelow
@@ -35,19 +36,15 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 113 - ((0 * winheight(0) + 24) / 48)
+let s:l = 177 - ((17 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 113
+keepjumps 177
 normal! 0
 tabnext
+edit src/Game.hpp
 argglobal
-if bufexists("term://~/Desktop/Sandbox//10864:C:/Windows/system32/cmd.exe") | buffer term://~/Desktop/Sandbox//10864:C:/Windows/system32/cmd.exe | else | edit term://~/Desktop/Sandbox//10864:C:/Windows/system32/cmd.exe | endif
-if &buftype ==# 'terminal'
-  silent file term://~/Desktop/Sandbox//10864:C:/Windows/system32/cmd.exe
-endif
-balt term://~/Desktop/Sandbox//10864:C:/Windows/system32/cmd.exe
 setlocal fdm=marker
 setlocal fde=0
 setlocal fmr=<--,-->
@@ -56,29 +53,50 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 16 - ((15 * winheight(0) + 24) / 48)
+let s:l = 27 - ((26 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 16
+keepjumps 27
+normal! 024|
+tabnext
+argglobal
+if bufexists("term://~/Desktop/Sandbox//800:C:/Windows/system32/cmd.exe") | buffer term://~/Desktop/Sandbox//800:C:/Windows/system32/cmd.exe | else | edit term://~/Desktop/Sandbox//800:C:/Windows/system32/cmd.exe | endif
+if &buftype ==# 'terminal'
+  silent file term://~/Desktop/Sandbox//800:C:/Windows/system32/cmd.exe
+endif
+balt term://~/Desktop/Sandbox//800:C:/Windows/system32/cmd.exe
+setlocal fdm=marker
+setlocal fde=0
+setlocal fmr=<--,-->
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+let s:l = 10016 - ((15 * winheight(0) + 21) / 43)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 10016
 normal! 0
-tabnext 2
+tabnext 1
+badd +177 src/Game.cpp
+badd +7 src/Algorithms.cpp
 badd +85 src/Game.hpp
-badd +128 src/Game.cpp
 badd +2 src/Material.hpp
 badd +25 src/Renderer.hpp
 badd +17 src/Renderer.cpp
-badd +13 src/main.cpp
+badd +10 src/main.cpp
 badd +1 src/Material.cpp
 badd +6 src/DataTypes.hpp
 badd +13 src/GamePad.hpp
 badd +11 src/Timer.hpp
 badd +47 src/Timer.cpp
-badd +0 term://~/Desktop/Sandbox//10864:C:/Windows/system32/cmd.exe
 badd +5 term://~/Desktop/Sandbox//2836:C:/Windows/system32/cmd.exe
 badd +4 term://~/Desktop/Sandbox//15424:C:/Windows/system32/cmd.exe
 badd +6 src/Algorithms.hpp
-badd +7 src/Algorithms.cpp
+badd +0 term://~/Desktop/Sandbox//800:C:/Windows/system32/cmd.exe
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
@@ -90,6 +108,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 let g:this_session = v:this_session
 let g:this_obsession = v:this_session
 doautoall SessionLoadPost
